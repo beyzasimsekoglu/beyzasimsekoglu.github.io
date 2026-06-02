@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Beyza Simsekoglu</title>
+<meta name="description" content="Beyza Simsekoglu — Product Manager. Cornell Tech. Building Mileo." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FBF8F4;
+    --bg-2: #F4EFE7;
+    --ink: #2A2622;
+    --ink-soft: #6E6660;
+    --ink-mute: #9C938B;
+    --line: #E8E0D4;
+    --accent: #C9A78A;     /* warm clay */
+    --accent-2: #A8B89A;   /* sage */
+    --accent-3: #E8C9C0;   /* blush */
+    --radius: 14px;
+    --maxw: 720px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Soft texture overlay */
+  body::before{
+    content:"";
+    position: fixed; inset: 0;
+    background-image: radial-gradient(rgba(42,38,34,0.018) 1px, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Floating soft blobs */
+  .blob{
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob.a{ width: 380px; height: 380px; background: var(--accent-3); top: -120px; right: -100px; }
+  .blob.b{ width: 320px; height: 320px; background: var(--accent-2); bottom: -100px; left: -80px; opacity: 0.25;}
+
+  .wrap{
+    position: relative;
+    z-index: 1;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* NAV */
+  nav{
+    position: sticky; top: 0;
+    background: rgba(251,248,244,0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    z-index: 50;
+    border-bottom: 1px solid transparent;
+    transition: border-color .3s;
+  }
+  nav.scrolled{ border-bottom-color: var(--line); }
+  .nav-inner{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 18px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .mark{
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--ink);
+  }
+  .mark span{ color: var(--accent); }
+  .nav-links{ display:flex; gap: 28px; }
+  .nav-links a{
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: color .2s;
+  }
+  .nav-links a:hover{ color: var(--ink); }
+  @media (max-width: 560px){ .nav-links{ gap: 18px } .nav-links a{ font-size: 13px } }
+
+  /* HERO */
+  header.hero{
+    padding: 120px 0 80px;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+    letter-spacing: 0;
+  }
+  .dot{
+    width: 6px; height: 6px; border-radius:50%;
+    background: var(--accent-2);
+    box-shadow: 0 0 0 4px rgba(168,184,154,0.18);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%, 100%{ box-shadow: 0 0 0 4px rgba(168,184,154,0.18) }
+    50%{ box-shadow: 0 0 0 8px rgba(168,184,154,0.06) }
+  }
+  h1.name{
+    font-family: 'Geist', sans-serif;
+    font-weight: 500;
+    font-size: clamp(42px, 6.5vw, 64px);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  h1.name em{
+    font-style: normal;
+    color: var(--ink-soft);
+    font-weight: 300;
+  }
+  .lede{
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 540px;
+    line-height: 1.7;
+  }
+  .lede strong{
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* SECTIONS */
+  section{ padding: 72px 0; }
+  .section-label{
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+  h2.section-title{
+    font-family: 'Geist', sans-serif;
+    font-weight: 500;
+    font-size: clamp(26px, 3.6vw, 34px);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    margin-bottom: 36px;
+    color: var(--ink);
+  }
+
+  /* ABOUT */
+  .about p{
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    line-height: 1.75;
+  }
+  .about p strong{ color: var(--ink); font-weight: 500; }
+
+  .meta-grid{
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .meta-grid .k{
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-mute);
+    margin-bottom: 6px;
+  }
+  .meta-grid .v{ font-size: 15px; color: var(--ink); font-weight: 400; }
+
+  /* PROJECTS */
+  .project{
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: start;
+    transition: padding .3s ease;
+    cursor: pointer;
+    position: relative;
+  }
+  .project:first-child{ border-top: 1px solid var(--line); }
+  .project:hover{ padding-left: 12px; }
+  .project::before{
+    content:"";
+    position: absolute;
+    left: 0; top: 50%;
+    width: 4px; height: 0;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: height .3s ease, top .3s ease;
+  }
+  .project:hover::before{ height: 60%; top: 20%; }
+  .project h3{
+    font-family: 'Geist', sans-serif;
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .project .role{
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--ink-mute);
+    margin-bottom: 12px;
+    letter-spacing: 0;
+  }
+  .project .desc{
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    max-width: 520px;
+  }
+  .project .arrow{
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 18px;
+    color: var(--ink-mute);
+    transition: transform .25s ease, color .25s ease;
+    align-self: center;
+  }
+  .project:hover .arrow{
+    transform: translateX(6px);
+    color: var(--accent);
+  }
+  .project a.cover{
+    position: absolute; inset: 0;
+    text-decoration: none;
+  }
+
+  /* WRITING */
+  .post{
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+    display:flex; justify-content:space-between; gap: 20px;
+    align-items: baseline;
+    cursor: pointer;
+    transition: padding-left .25s ease;
+  }
+  .post:first-child{ border-top: 1px solid var(--line); }
+  .post:hover{ padding-left: 8px; }
+  .post .t{
+    font-family: 'Geist', sans-serif;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+  .post .d{
+    font-size: 13px;
+    color: var(--ink-mute);
+    flex-shrink: 0;
+  }
+  .writing-note{
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--ink-mute);
+    font-style: italic;
+  }
+
+  /* CONTACT */
+  .contact-card{
+    background: var(--bg-2);
+    border-radius: var(--radius);
+    padding: 48px 40px;
+    margin-top: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-card::after{
+    content:"";
+    position: absolute;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: var(--accent-3);
+    opacity: 0.4;
+    filter: blur(40px);
+    top: -80px; right: -60px;
+  }
+  .contact-card .inner{ position: relative; z-index: 1; }
+  .contact-card h3{
+    font-family: 'Geist', sans-serif;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+  }
+  .contact-card p{
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+    font-size: 16px;
+    max-width: 420px;
+  }
+  .contact-links{
+    display:flex; flex-wrap: wrap; gap: 10px;
+  }
+  .contact-links a{
+    display: inline-flex; align-items:center; gap: 8px;
+    padding: 10px 18px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 14px;
+    transition: all .25s ease;
+  }
+  .contact-links a:hover{
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -10px rgba(201,167,138,0.4);
+  }
+  .contact-links a.primary{
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+  .contact-links a.primary:hover{
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--ink);
+  }
+
+  /* FOOTER */
+  footer{
+    padding: 48px 0 64px;
+    border-top: 1px solid var(--line);
+    margin-top: 60px;
+  }
+  footer .row{
+    display:flex; justify-content:space-between; align-items:center;
+    font-size: 13px; color: var(--ink-mute);
+    flex-wrap: wrap; gap: 12px;
+  }
+
+  /* Reveal animation */
+  .reveal{
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .reveal.in{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity: 1; transform: none; transition: none; }
+    .dot{ animation: none; }
+  }
+
+  /* Print-ish polish for small screens */
+  @media (max-width: 560px){
+    header.hero{ padding: 80px 0 60px; }
+    section{ padding: 56px 0; }
+    .contact-card{ padding: 36px 28px; }
+    .meta-grid{ grid-template-columns: 1fr; gap: 16px; }
+    .project{ grid-template-columns: 1fr; }
+    .project .arrow{ display:none; }
+    .post{ flex-direction: column; gap: 4px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+  <div class="blob a"></div>
+  <div class="blob b"></div>
+
+  <nav id="nav">
+    <div class="nav-inner">
+      <div class="mark">beyza<span>.</span></div>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#work">Work</a>
+        <a href="#writing">Writing</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+
+    <header class="hero">
+      <div class="eyebrow reveal"><span class="dot"></span> New York / Bay Area · Joining Arista Networks as Product Automation Manager</div>
+      <h1 class="name reveal">Beyza <em>Simsekoglu</em></h1>
+      <p class="lede reveal">
+        Product manager working at the seam between <strong>data, design, and decisions</strong>.
+        Currently building <strong>Mileo</strong> at Cornell Tech &mdash; an AI persona engine that lets product teams pressure-test ideas before they ship. Next: <strong>Arista Networks</strong>, where I'll lead product automation on the hardware side.
+      </p>
+    </header>
+
+    <section id="about" class="about">
+      <div class="section-label reveal">About</div>
+      <h2 class="section-title reveal">A short version.</h2>
+      <p class="reveal">
+        I'm a product manager with a soft spot for <strong>early-stage ambiguity</strong> &mdash; the part where the brief is half-written and the data is half-clean.
+        Previously co-founded LANS, a workspace-matching startup in San Francisco, and led growth product work at fast-delivery and CPG startups through hypergrowth.
+      </p>
+      <p class="reveal">
+        Today I'm finishing my master's in Data Science &amp; Decision Analytics at <strong>Cornell Tech</strong>, where I lead product on Mileo and previously ran an AI-diagnostics initiative at <strong>UC Berkeley Lab</strong>. After graduation I'm joining <strong>Arista Networks</strong> as a Product Automation Manager &mdash; moving into hardware and the systems side of networking infrastructure.
+      </p>
+      <p class="reveal">
+        Outside of work: oil painting, piano, and long walks looking for the one good coffee in any new city.
+      </p>
+
+      <div class="meta-grid reveal">
+        <div><div class="k">Based in</div><div class="v">New York / Bay Area</div></div>
+        <div><div class="k">Next</div><div class="v">Arista Networks &mdash; Product Automation</div></div>
+        <div><div class="k">Studying</div><div class="v">M.Eng., Cornell Tech</div></div>
+        <div><div class="k">Building</div><div class="v">Mileo &mdash; AI personas</div></div>
+        <div><div class="k">Speaks</div><div class="v">Turkish &middot; English</div></div>
+        <div><div class="k">Off the clock</div><div class="v">Painting &middot; Piano</div></div>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="section-label reveal">Selected work</div>
+      <h2 class="section-title reveal">Things I've shipped &amp; led.</h2>
+
+      <div class="project reveal">
+        <a class="cover" href="https://mileo.co" target="_blank" rel="noopener" aria-label="Mileo"></a>
+        <div>
+          <h3>Mileo</h3>
+          <div class="role">Product Manager &middot; Cornell Startup Studio &middot; 2025&ndash;Now</div>
+          <p class="desc">An AI persona engine that turns real customer data into named, consistent-voice characters product teams can chat with &mdash; or watch debate &mdash; before pricing, feature, or messaging calls. Local-first; data never leaves the machine.</p>
+        </div>
+        <div class="arrow">&rarr;</div>
+      </div>
+
+      <div class="project reveal">
+        <a class="cover" href="#" aria-label="LANS"></a>
+        <div>
+          <h3>LANS</h3>
+          <div class="role">Co-Founder, CEO &amp; Head of Product &middot; San Francisco &middot; 2023&ndash;2024</div>
+          <p class="desc">Matched coworking spaces with people seeking flexible, discounted seats. Raised $185K pre-seed, scaled to 2,000+ users with 38% repeat rate, and ran the full lifecycle from discovery to A/B testing to launch.</p>
+        </div>
+        <div class="arrow">&rarr;</div>
+      </div>
+
+      <div class="project reveal">
+        <a class="cover" href="#" aria-label="UC Berkeley Lab"></a>
+        <div>
+          <h3>AI Diagnostics</h3>
+          <div class="role">Product Manager &middot; UC Berkeley Lab &middot; 2025</div>
+          <p class="desc">Translated clinical and engineering needs into product requirements for bio-sensor chips, integrating time-series and generative models to lift diagnostic accuracy by 22% across four on-schedule release milestones.</p>
+        </div>
+        <div class="arrow">&rarr;</div>
+      </div>
+
+      <div class="project reveal">
+        <a class="cover" href="#" aria-label="San Francisco Naturals"></a>
+        <div>
+          <h3>SF Naturals</h3>
+          <div class="role">Growth Product Manager &middot; San Francisco &middot; 2022&ndash;2023</div>
+          <p class="desc">Drove strategic B2B adoption and distributor relationships, lifting repeat-purchase rate to 33% and daily orders by 19%. Led GTM campaigns that grew brand visibility 17% and secured follow-on funding.</p>
+        </div>
+        <div class="arrow">&rarr;</div>
+      </div>
+
+      <div class="project reveal">
+        <a class="cover" href="#" aria-label="Popcornvan / Feed App"></a>
+        <div>
+          <h3>Feed App</h3>
+          <div class="role">Growth Product Manager &middot; Popcornvan &middot; 2021&ndash;2022</div>
+          <p class="desc">First-5 employee at seed. Helped the team scale from 5 to 150 people and $5M to a $30M Series A &mdash; owning vendor product strategy and data-driven purchasing models that cut sourcing costs ~12% and lifted targeted sales 14%.</p>
+        </div>
+        <div class="arrow">&rarr;</div>
+      </div>
+    </section>
+
+    <section id="writing">
+      <div class="section-label reveal">Writing</div>
+      <h2 class="section-title reveal">Notes, mostly on product.</h2>
+
+      <div class="post reveal">
+        <div class="t">The half-written brief problem</div>
+        <div class="d">Coming soon</div>
+      </div>
+      <div class="post reveal">
+        <div class="t">What user research stops measuring at scale</div>
+        <div class="d">Coming soon</div>
+      </div>
+      <div class="post reveal">
+        <div class="t">Local-first is a product decision, not a privacy footnote</div>
+        <div class="d">Coming soon</div>
+      </div>
+
+      <p class="writing-note reveal">Drafts in progress. I write when an idea has earned the page.</p>
+    </section>
+
+    <section id="contact">
+      <div class="section-label reveal">Contact</div>
+      <div class="contact-card reveal">
+        <div class="inner">
+          <h3>Let's talk.</h3>
+          <p>Open to design-partner conversations for Mileo, hardware/product chats ahead of Arista, or a good coffee in New York or the Bay.</p>
+          <div class="contact-links">
+            <a class="primary" href="mailto:bs896@cornell.edu">
+              <span>bs896@cornell.edu</span>
+            </a>
+            <a href="https://www.linkedin.com/in/beyzasimsekoglu" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://github.com/beyzasimsekoglu" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://mileo.co" target="_blank" rel="noopener">Mileo.co</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="row">
+        <div>&copy; 2026 H. Beyza Simsekoglu</div>
+        <div>Made quietly, in New York.</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Sticky nav border
+    const nav = document.getElementById('nav');
+    const onScroll = () => {
+      if (window.scrollY > 8) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('in'), i * 60);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
