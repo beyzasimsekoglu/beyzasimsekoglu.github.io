@@ -94,7 +94,7 @@
     letter-spacing: 0;
     color: var(--ink);
   }
-  .mark span{ color: var(--accent); }
+  .mark span{ color: var(--ink-mute); }
   .nav-links{ display:flex; gap: 24px; }
   .nav-links a{
     color: var(--ink-soft);
@@ -140,8 +140,8 @@
   }
   h1.name em{
     font-style: normal;
-    font-weight: 300;
-    color: var(--accent);
+    font-weight: inherit;
+    color: inherit;
   }
   .lede{
     font-size: 21px;
@@ -172,7 +172,7 @@
   .section-label::before{
     content:"";
     width: 18px; height: 1px;
-    background: var(--accent);
+    background: var(--ink-mute);
   }
   h2.section-title{
     font-family: var(--serif);
@@ -185,8 +185,8 @@
   }
   h2.section-title em{
     font-style: normal;
-    color: var(--accent);
-    font-weight: 300;
+    color: inherit;
+    font-weight: inherit;
   }
 
   /* ABOUT with photo */
@@ -311,7 +311,7 @@
   .now li .tag{
     font-family: var(--mono);
     font-size: 10px;
-    color: var(--accent);
+    color: var(--ink-mute);
     text-transform: lowercase;
     flex-shrink: 0;
     min-width: 62px;
@@ -351,7 +351,7 @@
     margin-bottom: 8px;
     color: var(--ink);
   }
-  .project h3 em{ font-style: normal; font-weight: 300; color: var(--accent); }
+  .project h3 em{ font-style: normal; font-weight: inherit; color: inherit; }
   .project .role{
     font-family: var(--mono);
     font-size: 10px;
@@ -395,8 +395,8 @@
   .writing-coming .icon{
     font-family: var(--serif);
     font-style: normal;
-    font-size: 32px;
-    color: var(--accent);
+    font-size: 24px;
+    color: var(--ink-mute);
     display: block;
     margin-bottom: 12px;
     font-weight: 300;
@@ -438,7 +438,7 @@
     margin-bottom: 16px;
     letter-spacing: -0.015em;
   }
-  .contact-card h3 em{ font-style: normal; color: var(--accent); font-weight: 300; }
+  .contact-card h3 em{ font-style: normal; color: inherit; font-weight: inherit; }
   .contact-card p{
     color: var(--ink-soft);
     margin-bottom: 32px;
@@ -481,6 +481,53 @@
     background: var(--accent);
     border-color: var(--accent);
     color: var(--bg);
+  }
+
+  /* LIFE LATELY */
+  .life-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .life-tile{
+    aspect-ratio: 1 / 1;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    display: grid;
+    place-items: center;
+    transition: transform .35s ease, box-shadow .35s ease;
+    cursor: pointer;
+  }
+  .life-tile:hover{
+    transform: translateY(-3px) rotate(-0.6deg);
+    box-shadow: 0 10px 30px -16px rgba(42,38,34,0.18);
+  }
+  .life-tile img{
+    width: 100%; height: 100%; object-fit: cover;
+    display: block;
+  }
+  .life-tile .placeholder{
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-mute);
+    text-align: center;
+    padding: 12px;
+    line-height: 1.5;
+    text-transform: lowercase;
+  }
+  .life-caption{
+    margin-top: 24px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-align: center;
+    text-transform: lowercase;
+  }
+  @media (max-width: 560px){
+    .life-grid{ grid-template-columns: repeat(2, 1fr); gap: 10px; }
   }
 
   /* FOOTER */
@@ -535,6 +582,7 @@
       <div class="nav-links">
         <a href="#about">about</a>
         <a href="#now">now</a>
+        <a href="#life">life</a>
         <a href="#work">work</a>
         <a href="#writing">writing</a>
         <a href="#contact">contact</a>
@@ -607,7 +655,7 @@
             <div class="updated">updated jun 2026</div>
           </div>
           <ul>
-            <li><span class="tag">just did</span> <span>Graduated <strong>Cornell University</strong> M.Eng. on May 15.</span></li>
+            <li><span class="tag">just did</span> <span>Graduated <strong>Cornell University</strong> M.Eng. on May 15, 2026.</span></li>
             <li><span class="tag">packing</span> <span>NYC &rarr; Bay Area. Three suitcases. Possibly more olives than is reasonable.</span></li>
             <li><span class="tag">starting</span> <span>Joining <strong>Arista Networks</strong> in June. Product automation, hardware side. First ever hardware role.</span></li>
             <li><span class="tag">building</span> <span>Still shipping on <strong>Mileo</strong>. Persona debate mode and design partner onboarding.</span></li>
@@ -616,6 +664,21 @@
           </ul>
         </div>
       </div>
+    </section>
+
+    <section id="life">
+      <div class="section-label reveal">life lately</div>
+      <h2 class="section-title reveal">Paintings, walks, random.</h2>
+
+      <div class="life-grid reveal">
+        <div class="life-tile"><div class="placeholder">painting<br>no. 1</div></div>
+        <div class="life-tile"><div class="placeholder">brooklyn<br>9pm</div></div>
+        <div class="life-tile"><div class="placeholder">studio<br>floor</div></div>
+        <div class="life-tile"><div class="placeholder">bay<br>bridge</div></div>
+        <div class="life-tile"><div class="placeholder">coffee<br>no. 47</div></div>
+        <div class="life-tile"><div class="placeholder">turkish<br>olives</div></div>
+      </div>
+      <p class="life-caption reveal">drop real photos at /images/ and i'll wire them in</p>
     </section>
 
     <section id="work">
