@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Life Lately — Beyza Simsekoglu</title>
+<meta name="description" content="Photos. Life lately. Beyza Simsekoglu." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FBF8F4;
+    --ink: #2A2622;
+    --ink-soft: #6E6660;
+    --ink-mute: #9C938B;
+    --line: #E8E0D4;
+    --serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+    --mono: 'Geist Mono', ui-monospace, monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* faint texture */
+  body::before{
+    content:"";
+    position: fixed; inset: 0;
+    background-image: radial-gradient(rgba(42,38,34,0.018) 1px, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap{
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* minimal top nav */
+  .top{
+    padding: 28px 0 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: lowercase;
+  }
+  .top a{
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .top a:hover{ color: var(--ink); }
+  .top .mark{
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* hero */
+  header{
+    padding: 60px 0 50px;
+    text-align: center;
+  }
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-transform: lowercase;
+    margin-bottom: 18px;
+  }
+  h1{
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 6vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 18px;
+  }
+  .sub{
+    color: var(--ink-soft);
+    font-size: 17px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* gallery */
+  .gallery{
+    padding: 30px 0 60px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .photo{
+    aspect-ratio: 1 / 1;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #efe8db;
+    cursor: pointer;
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  .photo:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px -18px rgba(42,38,34,0.25);
+  }
+  .photo img{
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .8s ease;
+  }
+  .photo:hover img{
+    transform: scale(1.03);
+  }
+
+  /* lightbox */
+  .lightbox{
+    position: fixed; inset: 0;
+    background: rgba(42,38,34,0.92);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    cursor: zoom-out;
+    padding: 40px;
+  }
+  .lightbox.open{ display: flex; }
+  .lightbox img{
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.6);
+  }
+  .lightbox .close{
+    position: absolute;
+    top: 24px; right: 30px;
+    color: rgba(255,255,255,0.6);
+    font-family: var(--mono);
+    font-size: 14px;
+    cursor: pointer;
+    transition: color .2s;
+    text-transform: lowercase;
+  }
+  .lightbox .close:hover{ color: white; }
+
+  footer{
+    padding: 32px 0 56px;
+    border-top: 1px solid var(--line);
+    margin-top: 30px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-transform: lowercase;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media (max-width: 720px){
+    .gallery{ grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    header{ padding: 36px 0 30px; }
+    .wrap{ padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a href="index.html" class="mark">beyza<span style="color:var(--ink-mute)">.</span></a>
+      <a href="index.html">&larr; back</a>
+    </div>
+
+    <header>
+      <div class="eyebrow">life lately</div>
+      <h1>Paintings, walks, random.</h1>
+      <p class="sub">A scroll of recent things. Click any photo to see it bigger.</p>
+    </header>
+
+    <div class="gallery">
+      <div class="photo"><img src="images/01.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/02.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/03.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/04.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/05.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/06.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/07.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/08.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/09.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/10.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/11.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/12.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/13.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/14.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/15.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/16.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/17.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/18.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/19.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/20.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/21.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/22.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/23.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/24.jpg" alt="" loading="lazy"></div>
+      <div class="photo"><img src="images/25.jpg" alt="" loading="lazy"></div>
+    </div>
+
+    <footer>
+      <div>&copy; 2026 H. Beyza Simsekoglu</div>
+      <div><a href="index.html" style="color:inherit; text-decoration:none;">back home &rarr;</a></div>
+    </footer>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <div class="close" id="close">close &times;</div>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.photo img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('open');
+      });
+    });
+    const close = () => lightbox.classList.remove('open');
+    lightbox.addEventListener('click', close);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  </script>
+</body>
+</html>
