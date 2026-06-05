@@ -206,33 +206,27 @@
   /* ABOUT with photo */
   .about-grid{
     display: grid;
-    grid-template-columns: 130px 1fr;
-    gap: 32px;
+    grid-template-columns: 220px 1fr;
+    gap: 36px;
     align-items: start;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
   }
   .portrait{
-    width: 130px; height: 130px;
+    width: 220px; height: 220px;
     border-radius: 50%;
     background: var(--bg-2);
-    object-fit: cover;
     border: 1px solid var(--line);
     position: relative;
     overflow: hidden;
     display: grid; place-items: center;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--ink-mute);
-    text-align: center;
-    padding: 12px;
   }
   .portrait img{
     width: 100%; height: 100%; object-fit: cover;
     display: block;
   }
   @media (max-width: 560px){
-    .about-grid{ grid-template-columns: 96px 1fr; gap: 20px; }
-    .portrait{ width: 96px; height: 96px; }
+    .about-grid{ grid-template-columns: 1fr; gap: 24px; justify-items: start; }
+    .portrait{ width: 160px; height: 160px; }
   }
   .about p{
     font-size: 19px;
@@ -685,7 +679,7 @@
 
       <div class="about-grid reveal">
         <div class="portrait">
-          <img src="portrait.jpg?v=3" alt="Beyza Simsekoglu" />
+          <img src="portrait.jpg?v=4" alt="Beyza Simsekoglu" />
         </div>
         <div>
           <p>
