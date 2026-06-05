@@ -396,31 +396,80 @@
     text-decoration: none;
   }
 
-  /* WRITING coming soon treatment */
-  .writing-coming{
-    background: transparent;
-    border: 1px dashed var(--line);
-    border-radius: var(--radius);
-    padding: 40px 32px;
-    text-align: center;
-  }
-  .writing-coming .icon{
-    font-family: var(--serif);
-    font-style: normal;
-    font-size: 24px;
-    color: var(--ink-mute);
+  /* WRITING post card */
+  .post-card{
     display: block;
-    margin-bottom: 12px;
-    font-weight: 300;
+    padding: 28px 32px 30px;
+    background: var(--bg-2);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: inherit;
+    transition: transform .25s ease, box-shadow .25s ease;
+    position: relative;
   }
-  .writing-coming p{
+  .post-card:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px -18px rgba(42,38,34,0.15);
+  }
+  .post-meta{
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-transform: lowercase;
+    margin-bottom: 14px;
+  }
+  .post-title{
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .post-excerpt{
     color: var(--ink-soft);
     font-size: 17px;
     line-height: 1.55;
-    max-width: 380px;
-    margin: 0 auto;
+    margin-bottom: 18px;
   }
-  .writing-coming p em{ font-style: normal; color: var(--ink); }
+  .post-cta{
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: lowercase;
+  }
+  .post-card:hover .post-cta{ color: var(--ink); }
+
+  .post-gallery{
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .post-gallery img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  .post-gallery img:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -14px rgba(42,38,34,0.2);
+  }
+  .post-gallery-caption{
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-align: center;
+    text-transform: lowercase;
+  }
+  @media (max-width: 560px){
+    .post-gallery{ grid-template-columns: repeat(2, 1fr); }
+  }
 
   /* CONTACT */
   .contact-card{
@@ -757,12 +806,25 @@
 
     <section id="writing">
       <div class="section-label reveal">writing</div>
-      <h2 class="section-title reveal">Notes, <em>eventually</em>.</h2>
 
-      <div class="writing-coming reveal">
-        <span class="icon">&middot;</span>
-        <p>Drafts in progress. <em>I write when an idea has earned the page.</em><br>Check back; the first posts land soon.</p>
+      <a class="post-card reveal" href="https://medium.com/@simbey/starting-a-new-chapter-faadbbb4ef3f" target="_blank" rel="noopener">
+        <div class="post-meta">medium &middot; oct 26, 2023 &middot; 2 min read</div>
+        <h3 class="post-title">Starting a New Chapter.</h3>
+        <p class="post-excerpt">My first year in San Francisco. Joining a five person startup, watching it grow to 150, and what I took away when it all ended.</p>
+        <div class="post-cta">read on medium &rarr;</div>
+      </a>
+
+      <div class="post-gallery reveal">
+        <img src="images/popcorn/01.jpg" alt="" loading="lazy">
+        <img src="images/popcorn/02.jpg" alt="" loading="lazy">
+        <img src="images/popcorn/03.jpg" alt="" loading="lazy">
+        <img src="images/popcorn/04.jpg" alt="" loading="lazy">
+        <img src="images/popcorn/05.jpg" alt="" loading="lazy">
+        <img src="images/popcorn/06.jpg" alt="" loading="lazy">
+        <img src="images/popcorn/07.jpg" alt="" loading="lazy">
+        <img src="images/popcorn/08.jpg" alt="" loading="lazy">
       </div>
+      <p class="post-gallery-caption reveal">popcorn, 2021 to 2022.</p>
     </section>
 
     <section id="contact">
