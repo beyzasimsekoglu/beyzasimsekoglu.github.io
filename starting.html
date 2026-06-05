@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Starting a New Chapter — Beyza Simsekoglu</title>
+<meta name="description" content="My first year in San Francisco. Joining a five person startup, watching it grow to 150, and what I took away when it all ended." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FBF8F4;
+    --ink: #2A2622;
+    --ink-soft: #4A433D;
+    --ink-mute: #9C938B;
+    --line: #E8E0D4;
+    --serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+    --mono: 'Geist Mono', ui-monospace, monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.72;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body::before{
+    content:"";
+    position: fixed; inset: 0;
+    background-image: radial-gradient(rgba(42,38,34,0.018) 1px, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wrap{
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+  .top{
+    padding: 28px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: lowercase;
+  }
+  .top a{
+    color: var(--ink-mute);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .top a:hover{ color: var(--ink); }
+  .top .mark{ color: var(--ink); font-weight: 500; }
+
+  header.post-head{
+    padding: 50px 0 36px;
+  }
+  .meta{
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-transform: lowercase;
+    margin-bottom: 18px;
+  }
+  h1{
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(38px, 5.5vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    margin-bottom: 18px;
+    color: var(--ink);
+  }
+  .lede{
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--ink-mute);
+    font-weight: 300;
+    letter-spacing: -0.005em;
+  }
+
+  article{
+    padding: 30px 0 60px;
+  }
+  article p{
+    margin-bottom: 26px;
+    color: var(--ink);
+  }
+  article p strong{ font-weight: 500; }
+
+  .post-photo{
+    margin: 40px 0;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .post-photo img{
+    width: 100%;
+    display: block;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .post-photo figcaption{
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-align: center;
+    margin-top: 10px;
+    text-transform: lowercase;
+  }
+
+  .post-pair{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 40px 0;
+  }
+  .post-pair img{
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+  }
+
+  hr.divider{
+    border: none;
+    height: 1px;
+    background: var(--line);
+    margin: 50px 0;
+  }
+
+  footer{
+    padding: 28px 0 56px;
+    border-top: 1px solid var(--line);
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-transform: lowercase;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  footer a{ color: inherit; text-decoration: none; }
+  footer a:hover{ color: var(--ink); }
+
+  @media (max-width: 560px){
+    .post-pair{ grid-template-columns: 1fr; }
+    article{ padding: 20px 0 40px; }
+    body{ font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a href="index.html" class="mark">beyza<span style="color:var(--ink-mute)">.</span></a>
+      <a href="index.html">&larr; back</a>
+    </div>
+
+    <header class="post-head">
+      <div class="meta">essay &middot; oct 26, 2023 &middot; 2 min read</div>
+      <h1>Starting a New Chapter.</h1>
+      <p class="lede">My first year in San Francisco. Joining a five person startup, watching it grow to 150, and what I took away when it all ended.</p>
+    </header>
+
+    <article>
+      <p>Hello there, yes you. I'm thrilled you stopped by because I've got some stories to share about my life and my experiences in the bustling city of San Francisco.</p>
+
+      <p>Let's take a stroll down memory lane together, shall we. My journey in the Golden State kicked off in October 2021 when I landed a gig with a startup right here in San Francisco. The company's name still rings in my ears like a sweet melody. I was among the first five to hop on board. Believe it or not, that year was nothing short of magical. It's rare for people to reminisce about their old jobs with such fondness, but I consider myself incredibly fortunate.</p>
+
+      <figure class="post-photo">
+        <img src="images/popcorn/01.jpg" alt="" loading="lazy">
+        <figcaption>the rooftop. somewhere in 2021.</figcaption>
+      </figure>
+
+      <p>Now let's rewind a bit more. I wrapped up my studies in Management Information Systems back in June 2021. Although my career path wasn't crystal clear at graduation, one thing was certain: my heart was set on building a startup in Silicon Valley since I was a kid. Fired up and ready to chase my dreams, I packed my bags and dove headfirst into this new chapter.</p>
+
+      <p>I'm the kind of person who has a soft spot for statistics. I weigh my options and analyze potential outcomes in almost every aspect of my life. Sure, there have been times when my own assumptions were proven wrong, but those moments never got me down.</p>
+
+      <div class="post-pair">
+        <img src="images/popcorn/03.jpg" alt="" loading="lazy">
+        <img src="images/popcorn/04.jpg" alt="" loading="lazy">
+      </div>
+
+      <p>So, where were we. Ah yes, my time as one of the initial five. It was an extraordinary period that showered me with multiple insights on how startups actually tick. My official title was <strong>Category Manager</strong>. In reality I wore many hats, collaborating with design and marketing teams, getting involved in operations, you name it. That's the beauty of startups: anything and everything is possible.</p>
+
+      <p>I was there, right in the thick of it, as we navigated seed and Series A funding rounds. We started as a group of five and ballooned to a mighty team of 150. There were coffee chats with the CEO, moments of mutual support, shared laughter and shared sorrows. The company nurtured me, gave me a sense of belonging, and taught me lessons you simply can't put a price on.</p>
+
+      <figure class="post-photo">
+        <img src="images/popcorn/02.jpg" alt="" loading="lazy">
+        <figcaption>the day we ran out of swag and improvised.</figcaption>
+      </figure>
+
+      <div class="post-pair">
+        <img src="images/popcorn/05.jpg" alt="" loading="lazy">
+        <img src="images/popcorn/06.jpg" alt="" loading="lazy">
+      </div>
+
+      <p>As the saying goes, all good things must come to an end. Looking back, I realize how much I treasure the memories: the marketing campaigns, the market research, the sales forecasts with the data team, the new product trials I was lucky enough to run.</p>
+
+      <p>To all the fresh graduates out there, like I was: every step you take is a risk. But when you choose a path with heart and logic, even the risks can lead you somewhere beautiful. So go ahead. Take them.</p>
+
+      <div class="post-pair">
+        <img src="images/popcorn/07.jpg" alt="" loading="lazy">
+        <img src="images/popcorn/08.jpg" alt="" loading="lazy">
+      </div>
+
+      <hr class="divider">
+
+      <p style="font-family: var(--mono); font-size: 12px; color: var(--ink-mute); text-align: center; text-transform: lowercase;">popcorn, 2021 to 2022.</p>
+    </article>
+
+    <footer>
+      <div>&copy; 2026 H. Beyza Simsekoglu</div>
+      <div><a href="index.html">back home &rarr;</a></div>
+    </footer>
+  </div>
+</body>
+</html>
