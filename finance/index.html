@@ -172,6 +172,17 @@ body {
 </head>
 <body>
 
+<div id="importModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:998;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:28px;width:520px;max-width:95vw;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h2 style="font-size:16px;font-weight:700;">Import transactions</h2>
+      <button onclick="document.getElementById('importModal').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;color:#999;">×</button>
+    </div>
+    <p style="font-size:12px;color:#999;margin-bottom:12px;">Paste the JSON array of transactions below and click Import.</p>
+    <textarea id="importJson" style="width:100%;height:200px;border:1px solid #ddd;border-radius:8px;padding:12px;font-size:12px;font-family:monospace;resize:vertical;outline:none;" placeholder='[{"name":"Sephora","amount":124.12,"category":"Online Shopping","date":"2026-06-14"}, ...]'></textarea>
+    <button class="btn-submit" style="margin-top:12px;" onclick="importTransactions()">Import all →</button>
+  </div>
+</div>
 <div id="loadingOverlay">
   <div style="text-align:center;">
     <div class="spinner"></div>
@@ -248,7 +259,7 @@ body {
       </div>
       <div class="two-col">
         <div class="card">
-          <div class="card-head"><h2>Add expense</h2></div>
+          <div class="card-head"><h2>Add expense</h2><button class="badge badge-green" style="cursor:pointer;border:none;font-size:12px;padding:5px 12px;" onclick="document.getElementById('importModal').style.display='flex'">⬆ Import</button></div>
           <div class="form-group">
             <label>Description</label>
             <input type="text" id="txName" placeholder="e.g. Amazon, rent, coffee…" />
@@ -793,6 +804,23 @@ function renderEquity() {
 window.saveRSU = async () => {
   const v=parseFloat(document.getElementById('rsuVested').value);
   if(!isNaN(v)&&v>=0){S.rsu.vestedSoFar=v;await persistConfig(currentUser.uid);renderEquity();toast('RSU updated ✓');}
+};
+
+// ── Import ────────────────────────────────────────
+window.importTransactions = async () => {
+  const json=document.getElementById('importJson').value.trim();
+  if(!json){alert('Paste your JSON first.');return;}
+  try {
+    const txs=JSON.parse(json);
+    if(!Array.isArray(txs)) throw new Error('Must be a JSON array [ ... ]');
+    const newTxs=txs.map(t=>({id:Date.now().toString()+Math.random().toString(36).slice(2),name:t.name,amount:parseFloat(t.amount),category:t.category,date:t.date})).filter(t=>t.name&&!isNaN(t.amount)&&t.amount>0&&t.date);
+    S.transactions=[...S.transactions,...newTxs];
+    await persistTxs(currentUser.uid);
+    document.getElementById('importModal').style.display='none';
+    document.getElementById('importJson').value='';
+    renderBudget();
+    toast(`${newTxs.length} transactions imported ✓`);
+  } catch(e){alert('Invalid JSON: '+e.message);}
 };
 
 // ── Toast ─────────────────────────────────────────
