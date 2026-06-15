@@ -98,16 +98,18 @@ body {
 .prog-wrap { height: 5px; background: #eeecea; border-radius: 3px; overflow: hidden; }
 .prog-bar { height: 100%; border-radius: 3px; transition: width 0.4s; }
 /* ── Goals ── */
-.goals-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 20px; }
-.goal-card { background: #fff; border: 1px solid #e4e2db; border-radius: 12px; padding: 20px; }
-.goal-emoji { font-size: 22px; margin-bottom: 8px; }
-.goal-name { font-size: 12px; color: #999; margin-bottom: 4px; }
-.goal-vals { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
-.goal-saved { font-size: 20px; font-weight: 700; }
-.goal-target { font-size: 12px; color: #aaa; }
-.goal-prog-wrap { height: 7px; background: #eeecea; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
-.goal-prog-bar { height: 100%; border-radius: 4px; transition: width 0.5s; }
-.goal-footer { display: flex; justify-content: space-between; font-size: 12px; color: #999; }
+.goals-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 20px; }
+.goal-card { background: #fff; border: 1px solid #e4e2db; border-radius: 14px; padding: 20px 16px 16px; text-align: center; transition: transform 0.15s, box-shadow 0.15s; }
+.goal-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
+.goal-ring-wrap { position: relative; width: 96px; height: 96px; margin: 0 auto 12px; }
+.goal-ring-svg { width: 96px; height: 96px; }
+.goal-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.goal-ring-pct { font-size: 14px; font-weight: 800; line-height: 1; }
+.goal-ring-emoji { font-size: 16px; margin-top: 1px; }
+.goal-card-name { font-size: 13px; font-weight: 600; color: #1a1a18; margin-bottom: 3px; }
+.goal-card-saved { font-size: 18px; font-weight: 700; }
+.goal-card-target { font-size: 11px; color: #aaa; margin-bottom: 10px; }
+.goal-footer { display: flex; justify-content: space-between; font-size: 11px; color: #bbb; border-top: 1px solid #f3f1ec; padding-top: 10px; }
 /* ── Forms ── */
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-group { margin-bottom: 14px; }
@@ -218,6 +220,8 @@ body {
   <div class="tabs-bar">
     <button class="tab-btn active" onclick="showTab('budget',this)">Budget</button>
     <button class="tab-btn" onclick="showTab('goals',this)">Goals</button>
+    <button class="tab-btn" onclick="showTab('debts',this)">Debts</button>
+    <button class="tab-btn" onclick="showTab('equity',this)">Equity</button>
     <button class="tab-btn" onclick="showTab('settings',this)">Settings</button>
   </div>
 
@@ -281,6 +285,16 @@ body {
       <div class="tip-box">
         💡 After your monthly budget, you can save <strong id="goalSavingsCap"></strong>/mo toward your goals.
       </div>
+      <div class="two-col" style="margin-bottom:20px;">
+        <div class="card">
+          <div class="card-head"><h2>Overall savings</h2></div>
+          <div style="position:relative;height:190px;"><canvas id="savingsChart"></canvas></div>
+          <div class="chart-legend" id="savingsLegend"></div>
+        </div>
+        <div class="card" style="display:flex;align-items:center;justify-content:center;">
+          <div id="savingsSummaryBox" style="text-align:center;"></div>
+        </div>
+      </div>
       <div class="goals-grid" id="goalsGrid"></div>
       <div class="card" style="max-width:480px;">
         <div class="card-head"><h2>Add savings to a goal</h2></div>
@@ -295,6 +309,66 @@ body {
           </div>
         </div>
         <button class="btn-submit" onclick="addToGoal()">Save to goal →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-debts" style="display:none">
+    <div class="page">
+      <div class="summary-row" id="debtSummaryRow"></div>
+      <div class="two-col">
+        <div id="debtCards"></div>
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-head"><h2>Log a payment</h2></div>
+            <div class="form-group">
+              <label>Debt</label>
+              <select id="debtSelect"></select>
+            </div>
+            <div class="form-group">
+              <label>Payment amount ($)</label>
+              <input type="number" id="debtPayment" placeholder="0.00" min="0" step="10" />
+            </div>
+            <button class="btn-submit" onclick="logDebtPayment()">Log payment →</button>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2>Update balance</h2></div>
+            <div class="form-group">
+              <label>Debt</label>
+              <select id="debtBalSelect"></select>
+            </div>
+            <div class="form-group">
+              <label>Current balance ($)</label>
+              <input type="number" id="debtBalAmount" placeholder="e.g. 12000" min="0" step="100" />
+            </div>
+            <button class="btn-submit" onclick="updateDebtBalance()">Update balance</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-equity" style="display:none">
+    <div class="page">
+      <div class="summary-row" id="equitySummaryRow"></div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><h2>📅 Vesting schedule</h2></div>
+          <div id="vestingSchedule"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>⏳ Next vest countdown</h2></div>
+          <div id="vestCountdown"></div>
+        </div>
+      </div>
+      <div class="card" style="max-width:420px;">
+        <div class="card-head"><h2>Update vested total</h2></div>
+        <p style="font-size:12px;color:#999;margin-bottom:16px;">After each December 31st, enter how much you've received in total.</p>
+        <div class="setting-row">
+          <div><div style="font-weight:500;">Total vested so far ($)</div><div class="s-label">Cumulative amount received</div></div>
+          <input type="number" id="rsuVested" style="width:130px;" />
+        </div>
+        <button class="btn-save" onclick="saveRSU()">Save</button>
       </div>
     </div>
   </div>
@@ -324,6 +398,12 @@ body {
         <div class="card-head"><h2>Goal targets</h2></div>
         <div id="goalSettings"></div>
         <button class="btn-save" onclick="saveSettingsToCloud()">Save goals</button>
+      </div>
+      <div class="card" style="max-width:480px;margin-top:20px;">
+        <div class="card-head"><h2>Monthly debt payments</h2></div>
+        <p style="font-size:12px;color:#999;margin-bottom:12px;">These are subtracted from your available income for planning purposes.</p>
+        <div id="debtPaymentSettings"></div>
+        <button class="btn-save" onclick="saveSettingsToCloud()">Save debt payments</button>
       </div>
     </div>
   </div>
@@ -370,13 +450,22 @@ const DEFAULTS = {
     { name:'Health',           budget:200,  color:'#D4537E', emoji:'💊' },
     { name:'Work Setup',       budget:500,  color:'#185fa5', emoji:'💻' },
     { name:'Subscriptions',    budget:100,  color:'#5DCAA5', emoji:'📱' },
+    { name:'Lawyer / Legal',   budget:0,    color:'#8B6914', emoji:'⚖️' },
+    { name:'School / Tuition', budget:0,    color:'#C15C3A', emoji:'🎓' },
     { name:'Other',            budget:300,  color:'#888780', emoji:'📋' },
   ],
   goals: [
-    { name:'Emergency Fund', target:24500, saved:0, color:'#1D9E75', emoji:'🛡️', desc:'6 months expenses' },
-    { name:'Debt Payoff',    target:5000,  saved:0, color:'#7F77DD', emoji:'💳', desc:'Clear debt' },
-    { name:'Savings',        target:10000, saved:0, color:'#378ADD', emoji:'💰', desc:'General savings' },
-  ]
+    { name:'Emergency Fund',   target:24500, saved:0, color:'#1D9E75', emoji:'🛡️', desc:'6 months expenses' },
+    { name:'Credit Card',      target:5000,  saved:0, color:'#D85A30', emoji:'💳', desc:'Pay off credit card' },
+    { name:'Car Down Payment', target:5000,  saved:0, color:'#EF9F27', emoji:'🚗', desc:'Down payment on a car' },
+    { name:'Savings',          target:10000, saved:0, color:'#378ADD', emoji:'💰', desc:'General savings' },
+  ],
+  debts: [
+    { name:'School Loan',  balance:0, monthlyPayment:0, apr:0,     emoji:'🎓', color:'#378ADD' },
+    { name:'Credit Card',  balance:0, monthlyPayment:0, apr:24.99, emoji:'💳', color:'#D85A30' },
+    { name:'Lawyer Fees',  balance:0, monthlyPayment:0, apr:0,     emoji:'⚖️', color:'#7F77DD' },
+  ],
+  rsu: { totalGrant:200000, annualVest:50000, vestedSoFar:0, grantYear:2025 }
 };
 
 let S = {}, currentUser = null, chartInst = null;
@@ -416,9 +505,9 @@ async function loadUserData(uid) {
   const snap = await getDoc(cfgRef(uid));
   if (snap.exists()) {
     const d = snap.data();
-    S = { takeHome:d.takeHome||DEFAULTS.takeHome, grossSalary:d.grossSalary||DEFAULTS.grossSalary, categories:d.categories||DEFAULTS.categories, goals:d.goals||DEFAULTS.goals, currentMonth:d.currentMonth||nowYM() };
+    S = { takeHome:d.takeHome||DEFAULTS.takeHome, grossSalary:d.grossSalary||DEFAULTS.grossSalary, categories:d.categories||DEFAULTS.categories, goals:d.goals||DEFAULTS.goals, debts:d.debts||JSON.parse(JSON.stringify(DEFAULTS.debts)), rsu:d.rsu||JSON.parse(JSON.stringify(DEFAULTS.rsu)), currentMonth:d.currentMonth||nowYM() };
   } else {
-    S = { ...JSON.parse(JSON.stringify(DEFAULTS)), currentMonth: nowYM() };
+    S = { ...JSON.parse(JSON.stringify(DEFAULTS)), currentMonth: nowYM(), debts: JSON.parse(JSON.stringify(DEFAULTS.debts)), rsu: JSON.parse(JSON.stringify(DEFAULTS.rsu)) };
     await persistConfig(uid);
   }
   await loadMonthTxs(uid);
@@ -428,7 +517,7 @@ async function loadMonthTxs(uid) {
   S.transactions = snap.exists() ? (snap.data().transactions||[]) : [];
 }
 async function persistConfig(uid) {
-  await setDoc(cfgRef(uid), { takeHome:S.takeHome, grossSalary:S.grossSalary, categories:S.categories, goals:S.goals, currentMonth:S.currentMonth, updatedAt:serverTimestamp() });
+  await setDoc(cfgRef(uid), { takeHome:S.takeHome, grossSalary:S.grossSalary, categories:S.categories, goals:S.goals, debts:S.debts, rsu:S.rsu, currentMonth:S.currentMonth, updatedAt:serverTimestamp() });
 }
 async function persistTxs(uid) {
   await setDoc(mthRef(uid, S.currentMonth), { transactions:S.transactions, updatedAt:serverTimestamp() });
@@ -456,9 +545,9 @@ window.changeMonth = async d => {
 
 // ── Tabs ──────────────────────────────────────────
 window.showTab = (tab,btn) => {
-  ['budget','goals','settings'].forEach(t=>document.getElementById('tab-'+t).style.display=t===tab?'':'none');
+  ['budget','goals','debts','equity','settings'].forEach(t=>document.getElementById('tab-'+t).style.display=t===tab?'':'none');
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b===btn));
-  if(tab==='goals') renderGoals(); if(tab==='settings') renderSettings();
+  if(tab==='goals') renderGoals(); if(tab==='debts') renderDebts(); if(tab==='equity') renderEquity(); if(tab==='settings') renderSettings();
 };
 
 // ── Render budget ─────────────────────────────────
@@ -531,15 +620,67 @@ window.deleteTx = async id => {
 };
 
 // ── Goals ─────────────────────────────────────────
+let savingsChartInst = null;
 function renderGoals() {
   const cap=S.takeHome-totalBudget();
   document.getElementById('goalSavingsCap').textContent=$f(cap);
+  const R=38, C=+(2*Math.PI*R).toFixed(1);
   document.getElementById('goalsGrid').innerHTML=S.goals.map(g=>{
-    const pct=g.target>0?Math.min(100,Math.round(g.saved/g.target*100)):0, left=Math.max(0,g.target-g.saved), mos=cap>0?Math.ceil(left/cap):'∞';
-    return `<div class="goal-card"><div class="goal-emoji">${g.emoji}</div><div class="goal-name">${g.name}</div><div class="goal-vals"><div class="goal-saved" style="color:${g.color}">${$f(g.saved)}</div><div class="goal-target">of ${$f(g.target)}</div></div><div class="goal-prog-wrap"><div class="goal-prog-bar" style="width:${pct}%;background:${g.color};"></div></div><div class="goal-footer"><div>${pct}% done</div><div>${left>0?$f(left)+' to go':'✅ Done!'}</div></div>${left>0&&cap>0?`<div style="font-size:11px;color:#bbb;margin-top:6px;">~${mos} months at current rate</div>`:''}</div>`;
+    const pct=g.target>0?Math.min(100,Math.round(g.saved/g.target*100)):0;
+    const left=Math.max(0,g.target-g.saved), mos=cap>0?Math.ceil(left/cap):'∞';
+    const done=left===0;
+    const offset=+(C*(1-pct/100)).toFixed(1);
+    return `<div class="goal-card">
+      <div class="goal-ring-wrap">
+        <svg class="goal-ring-svg" viewBox="0 0 88 88">
+          <circle cx="44" cy="44" r="${R}" fill="none" stroke="#eeecea" stroke-width="9"/>
+          <circle cx="44" cy="44" r="${R}" fill="none" stroke="${g.color}" stroke-width="9"
+            stroke-dasharray="${C}" stroke-dashoffset="${offset}"
+            stroke-linecap="round" transform="rotate(-90 44 44)"
+            style="transition:stroke-dashoffset 0.9s ease;"/>
+        </svg>
+        <div class="goal-ring-center">
+          <div class="goal-ring-pct" style="color:${g.color}">${pct}%</div>
+          <div class="goal-ring-emoji">${g.emoji}</div>
+        </div>
+      </div>
+      <div class="goal-card-name">${g.name}</div>
+      <div class="goal-card-saved" style="color:${g.color}">${$f(g.saved)}</div>
+      <div class="goal-card-target">of ${$f(g.target)}</div>
+      <div class="goal-footer">
+        <div>${done?'✅ Done!':$f(left)+' left'}</div>
+        <div>${!done&&cap>0?'~'+mos+' mo':''}</div>
+      </div>
+    </div>`;
   }).join('');
+  renderSavingsChart();
   const sel=document.getElementById('goalSelect'); sel.innerHTML='';
   S.goals.forEach(g=>{const o=document.createElement('option');o.value=g.name;o.textContent=g.emoji+' '+g.name;sel.appendChild(o);});
+}
+function renderSavingsChart() {
+  const totalSaved=S.goals.reduce((a,g)=>a+g.saved,0);
+  const totalTarget=S.goals.reduce((a,g)=>a+g.target,0);
+  const totalLeft=Math.max(0,totalTarget-totalSaved);
+  const overallPct=totalTarget>0?Math.round(totalSaved/totalTarget*100):0;
+  if(savingsChartInst){savingsChartInst.destroy();savingsChartInst=null;}
+  const active=S.goals.filter(g=>g.saved>0);
+  const data=active.length
+    ? { labels:active.map(g=>g.name), datasets:[{data:active.map(g=>g.saved), backgroundColor:active.map(g=>g.color), borderWidth:2, borderColor:'#fff', hoverBorderWidth:0}] }
+    : { labels:['Nothing saved yet'], datasets:[{data:[1], backgroundColor:['#eeecea'], borderWidth:0}] };
+  savingsChartInst=new Chart(document.getElementById('savingsChart').getContext('2d'),{
+    type:'doughnut', data,
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>active.length?` ${ctx.label}: $${Math.round(ctx.parsed).toLocaleString()}`:''}}}}
+  });
+  document.getElementById('savingsLegend').innerHTML=active.length
+    ?active.map(g=>`<span><div class="legend-dot" style="background:${g.color}"></div>${g.name}</span>`).join('')
+    :'<span style="color:#bbb;font-size:12px;">Add savings to see breakdown</span>';
+  document.getElementById('savingsSummaryBox').innerHTML=`
+    <div style="font-size:48px;font-weight:800;letter-spacing:-2px;color:#1a1a18;">${overallPct}%</div>
+    <div style="font-size:13px;color:#999;margin-top:4px;">of all goals saved</div>
+    <div style="margin-top:20px;font-size:22px;font-weight:700;color:#158f50;">${$f(totalSaved)}</div>
+    <div style="font-size:12px;color:#aaa;">saved of ${$f(totalTarget)} total</div>
+    ${totalLeft>0?`<div style="margin-top:6px;font-size:12px;color:#bbb;">${$f(totalLeft)} remaining</div>`:'<div style="margin-top:10px;font-size:18px;">🎉 All goals done!</div>'}
+  `;
 }
 window.addToGoal = async () => {
   const name=document.getElementById('goalSelect').value, amount=parseFloat(document.getElementById('goalAmount').value);
@@ -554,13 +695,104 @@ function renderSettings() {
   document.getElementById('settingsGross').value=S.grossSalary;
   document.getElementById('budgetSettings').innerHTML=S.categories.map((c,i)=>`<div class="setting-row"><div style="display:flex;align-items:center;"><span class="s-dot" style="background:${c.color}"></span>${c.name}</div><input type="number" id="bs_${i}" value="${c.budget}" min="0" step="50"/></div>`).join('');
   document.getElementById('goalSettings').innerHTML=S.goals.map((g,i)=>`<div class="setting-row"><div style="display:flex;align-items:center;gap:8px;"><span>${g.emoji}</span><div><div style="font-weight:500;">${g.name}</div><div class="s-label">${g.desc}</div></div></div><input type="number" id="gs_${i}" value="${g.target}" min="0" step="500"/></div>`).join('');
+  document.getElementById('debtPaymentSettings').innerHTML=S.debts.map((d,i)=>`<div class="setting-row"><div style="display:flex;align-items:center;gap:8px;"><span>${d.emoji}</span><div><div style="font-weight:500;">${d.name}</div><div class="s-label">Monthly payment</div></div></div><input type="number" id="dp_${i}" value="${d.monthlyPayment}" min="0" step="50"/></div>`).join('');
 }
 window.saveSettingsToCloud = async () => {
   const th=parseFloat(document.getElementById('settingsTakeHome').value), gr=parseFloat(document.getElementById('settingsGross').value);
   if(!isNaN(th)&&th>0)S.takeHome=th; if(!isNaN(gr)&&gr>0)S.grossSalary=gr;
   S.categories.forEach((c,i)=>{const el=document.getElementById('bs_'+i);if(el){const v=parseFloat(el.value);if(!isNaN(v)&&v>=0)c.budget=v;}});
   S.goals.forEach((g,i)=>{const el=document.getElementById('gs_'+i);if(el){const v=parseFloat(el.value);if(!isNaN(v)&&v>0)g.target=v;}});
+  S.debts.forEach((d,i)=>{const el=document.getElementById('dp_'+i);if(el){const v=parseFloat(el.value);if(!isNaN(v)&&v>=0)d.monthlyPayment=v;}});
   await persistConfig(currentUser.uid); toast('Settings saved ✓');
+};
+
+// ── Debts ─────────────────────────────────────────
+function renderDebts() {
+  const totalDebt    = S.debts.reduce((a,d)=>a+d.balance,0);
+  const totalMonthly = S.debts.reduce((a,d)=>a+d.monthlyPayment,0);
+  const mos = totalMonthly>0 ? Math.ceil(totalDebt/totalMonthly) : 0;
+  document.getElementById('debtSummaryRow').innerHTML=`
+    <div class="sum-card"><div class="sum-label">Total debt</div><div class="sum-value ${totalDebt>0?'c-red':'c-green'}">${$f(totalDebt)}</div><div class="sum-sub">Across all accounts</div></div>
+    <div class="sum-card"><div class="sum-label">Monthly payments</div><div class="sum-value">${$f(totalMonthly)}</div><div class="sum-sub">Committed each month</div></div>
+    <div class="sum-card"><div class="sum-label">Payoff estimate</div><div class="sum-value">${mos>0?mos+' mo':'—'}</div><div class="sum-sub">${mos>0?'At current payment rate':totalDebt===0?'🎉 Debt-free!':'Set monthly payment'}</div></div>
+    <div class="sum-card"><div class="sum-label">After debt payments</div><div class="sum-value">${$f(S.takeHome-totalMonthly)}</div><div class="sum-sub">Remaining take-home</div></div>`;
+  document.getElementById('debtCards').innerHTML=S.debts.map(d=>{
+    const mosToPay=d.monthlyPayment>0?Math.ceil(d.balance/d.monthlyPayment):0;
+    return `<div class="card" style="margin-bottom:16px;">
+      <div class="card-head"><h2>${d.emoji} ${d.name}</h2>${d.balance===0?'<span class="badge badge-green">✓ Paid off</span>':''}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:12px;">
+        <div><div style="font-size:11px;color:#999;margin-bottom:3px;">Balance</div><div style="font-size:22px;font-weight:700;color:${d.balance>0?'#c0392b':'#158f50'}">${$f(d.balance)}</div></div>
+        <div><div style="font-size:11px;color:#999;margin-bottom:3px;">Monthly pay</div><div style="font-size:22px;font-weight:700;">${$f(d.monthlyPayment)}</div></div>
+        <div><div style="font-size:11px;color:#999;margin-bottom:3px;">${d.apr>0?'APR':'Interest'}</div><div style="font-size:22px;font-weight:700;">${d.apr>0?d.apr+'%':'—'}</div></div>
+      </div>
+      ${d.balance>0&&d.monthlyPayment>0?`<div style="font-size:12px;color:#888;">~${mosToPay} months to payoff (${Math.ceil(mosToPay/12*10)/10} yrs)</div>`:''}
+      ${d.balance===0?'<div style="font-size:12px;color:#158f50;">Nothing owed 🎉</div>':''}
+    </div>`;
+  }).join('');
+  ['debtSelect','debtBalSelect'].forEach(id=>{
+    const sel=document.getElementById(id); sel.innerHTML='';
+    S.debts.forEach(d=>{const o=document.createElement('option');o.value=d.name;o.textContent=d.emoji+' '+d.name;sel.appendChild(o);});
+  });
+}
+window.logDebtPayment = async () => {
+  const name=document.getElementById('debtSelect').value, amount=parseFloat(document.getElementById('debtPayment').value);
+  if(isNaN(amount)||amount<=0){alert('Enter a valid amount.');return;}
+  const d=S.debts.find(d=>d.name===name);
+  if(d){d.balance=Math.max(0,d.balance-amount);await persistConfig(currentUser.uid);document.getElementById('debtPayment').value='';renderDebts();toast('Payment logged ✓');}
+};
+window.updateDebtBalance = async () => {
+  const name=document.getElementById('debtBalSelect').value, amount=parseFloat(document.getElementById('debtBalAmount').value);
+  if(isNaN(amount)||amount<0){alert('Enter a valid balance.');return;}
+  const d=S.debts.find(d=>d.name===name);
+  if(d){d.balance=amount;await persistConfig(currentUser.uid);document.getElementById('debtBalAmount').value='';renderDebts();toast('Balance updated ✓');}
+};
+
+// ── Equity ────────────────────────────────────────
+function renderEquity() {
+  const rsu=S.rsu, now=new Date(), yr=now.getFullYear();
+  const vestDate=new Date(yr,11,31);
+  const daysLeft=Math.max(0,Math.ceil((vestDate-now)/(1000*60*60*24)));
+  const yearStart=new Date(yr,0,1), yearEnd=new Date(yr+1,0,1);
+  const yearPct=Math.round((now-yearStart)/(yearEnd-yearStart)*100);
+  const totalYears=rsu.totalGrant/rsu.annualVest;
+  const unvested=Math.max(0,rsu.totalGrant-rsu.vestedSoFar);
+  const yearsVested=Math.floor(rsu.vestedSoFar/rsu.annualVest);
+  document.getElementById('equitySummaryRow').innerHTML=`
+    <div class="sum-card"><div class="sum-label">Total grant</div><div class="sum-value">${$f(rsu.totalGrant)}</div><div class="sum-sub">${totalYears}-year vesting</div></div>
+    <div class="sum-card"><div class="sum-label">Vested so far</div><div class="sum-value c-green">${$f(rsu.vestedSoFar)}</div><div class="sum-sub">${Math.round(rsu.vestedSoFar/rsu.totalGrant*100)}% of total grant</div></div>
+    <div class="sum-card"><div class="sum-label">Next vest (Dec 31)</div><div class="sum-value">${$f(rsu.annualVest)}</div><div class="sum-sub">${daysLeft} days away</div></div>
+    <div class="sum-card"><div class="sum-label">Unvested remaining</div><div class="sum-value">${$f(unvested)}</div><div class="sum-sub">${totalYears-yearsVested} vests left</div></div>`;
+  document.getElementById('vestingSchedule').innerHTML=Array.from({length:totalYears},(_,i)=>{
+    const vestYr=(rsu.grantYear||2025)+i, amt=rsu.annualVest;
+    const isVested=rsu.vestedSoFar>=(i+1)*amt, isCurrent=vestYr===yr;
+    return `<div class="cat-row" style="${isCurrent?'background:#f5f3ee;border-radius:8px;padding:4px 8px;':''}">
+      <div class="cat-top">
+        <div class="cat-name"><div class="cat-dot" style="background:${isVested?'#158f50':isCurrent?'#EF9F27':'#ddd'}"></div>
+          ${vestYr}${isCurrent?' ← this year':''}${isVested?' ✓':''}
+        </div>
+        <div class="cat-amt" style="${isVested?'color:#158f50;':''}">${$f(amt)}</div>
+      </div>
+      ${isCurrent&&!isVested?`<div class="prog-wrap"><div class="prog-bar" style="width:${yearPct}%;background:#EF9F27;"></div></div>`:''}
+    </div>`;
+  }).join('');
+  document.getElementById('vestCountdown').innerHTML=`
+    <div style="text-align:center;padding:20px 0 28px;">
+      <div style="font-size:56px;font-weight:800;letter-spacing:-2px;">${daysLeft}</div>
+      <div style="font-size:13px;color:#999;margin-top:4px;">days until Dec 31, ${yr}</div>
+      <div style="margin-top:18px;font-size:13px;color:#555;">You'll receive <strong>${$f(rsu.annualVest)}</strong> in company equity</div>
+      <div style="margin-top:20px;">
+        <div class="prog-wrap" style="height:8px;"><div class="prog-bar" style="width:${yearPct}%;background:#158f50;"></div></div>
+        <div style="font-size:11px;color:#bbb;margin-top:6px;">${yearPct}% through ${yr}</div>
+      </div>
+      <div style="margin-top:18px;background:#e5f4ec;border-radius:10px;padding:12px 16px;font-size:13px;color:#158f50;">
+        💡 At $50K/yr, that's ~<strong>$${Math.round(50000/365*30).toLocaleString()}/mo</strong> accruing
+      </div>
+    </div>`;
+  document.getElementById('rsuVested').value=rsu.vestedSoFar;
+}
+window.saveRSU = async () => {
+  const v=parseFloat(document.getElementById('rsuVested').value);
+  if(!isNaN(v)&&v>=0){S.rsu.vestedSoFar=v;await persistConfig(currentUser.uid);renderEquity();toast('RSU updated ✓');}
 };
 
 // ── Toast ─────────────────────────────────────────
