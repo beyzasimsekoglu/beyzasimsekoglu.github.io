@@ -394,7 +394,7 @@ onAuthStateChanged(auth, async user => {
   if (user) {
     currentUser = user;
     document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('app').style.display = '';
+    document.getElementById('app').style.display = 'block';
     const av = document.getElementById('userAvatar');
     av.innerHTML = user.photoURL ? `<img src="${user.photoURL}" alt="">` : 'BZ';
     document.getElementById('userName').textContent = user.displayName?.split(' ')[0] || 'Beyza';
