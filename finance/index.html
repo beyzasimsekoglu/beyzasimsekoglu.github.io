@@ -823,6 +823,22 @@ window.importTransactions = async () => {
   } catch(e){alert('Invalid JSON: '+e.message);}
 };
 
+// ── Dev helpers (run from browser console) ────────
+window._setDebt = async (name, balance, monthly, apr) => {
+  const d=S.debts.find(d=>d.name===name);
+  if(!d){console.error('Debt not found. Names:',S.debts.map(d=>d.name));return;}
+  d.balance=balance; d.monthlyPayment=monthly; d.apr=apr;
+  await persistConfig(currentUser.uid); renderDebts&&renderDebts(); toast('Debt updated ✓');
+  console.log('✓ Updated',name,{balance,monthly,apr});
+};
+window._setGoal = async (name, saved) => {
+  const g=S.goals.find(g=>g.name===name);
+  if(!g){console.error('Goal not found. Names:',S.goals.map(g=>g.name));return;}
+  g.saved=saved;
+  await persistConfig(currentUser.uid); renderGoals&&renderGoals(); toast('Goal updated ✓');
+  console.log('✓ Updated goal',name,{saved});
+};
+
 // ── Toast ─────────────────────────────────────────
 function toast(msg) {
   const el=document.createElement('div'); el.className='toast'; el.textContent=msg;
