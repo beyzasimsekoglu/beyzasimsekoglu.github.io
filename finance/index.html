@@ -842,13 +842,23 @@ window.importTransactions = async () => {
   try {
     const txs=JSON.parse(json);
     if(!Array.isArray(txs)) throw new Error('Must be a JSON array [ ... ]');
-    const newTxs=txs.map(t=>({id:Date.now().toString()+Math.random().toString(36).slice(2),name:t.name,amount:parseFloat(t.amount),category:t.category,date:t.date})).filter(t=>t.name&&!isNaN(t.amount)&&t.amount>0&&t.date);
-    S.transactions=[...S.transactions,...newTxs];
-    await persistTxs(currentUser.uid);
+    const allNew=txs.map(t=>({id:Date.now().toString()+Math.random().toString(36).slice(2),name:t.name,amount:parseFloat(t.amount),category:t.category,date:t.date})).filter(t=>t.name&&!isNaN(t.amount)&&t.amount>0&&t.date);
+    // Group by month (YYYY-MM from date field)
+    const byMonth={};
+    allNew.forEach(t=>{const ym=t.date.slice(0,7);(byMonth[ym]||(byMonth[ym]=[])).push(t);});
+    let total=0;
+    for(const [ym, newTxs] of Object.entries(byMonth)){
+      const snap=await getDoc(mthRef(currentUser.uid,ym));
+      const existing=snap.exists()?snap.data().transactions||[]:[];
+      await setDoc(mthRef(currentUser.uid,ym),{transactions:[...existing,...newTxs],updatedAt:serverTimestamp()});
+      // If this is current month, update in-memory state too
+      if(ym===S.currentMonth) S.transactions=[...existing,...newTxs];
+      total+=newTxs.length;
+    }
     document.getElementById('importModal').style.display='none';
     document.getElementById('importJson').value='';
     renderBudget();
-    toast(`${newTxs.length} transactions imported ✓`);
+    toast(`${total} transactions imported across ${Object.keys(byMonth).length} month(s) ✓`);
   } catch(e){alert('Invalid JSON: '+e.message);}
 };
 
