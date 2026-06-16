@@ -354,6 +354,22 @@ body {
             </div>
             <button class="btn-submit" onclick="updateDebtBalance()">Update balance</button>
           </div>
+          <div class="card" style="margin-top:16px;">
+            <div class="card-head"><h2>Set monthly payment & APR</h2></div>
+            <div class="form-group">
+              <label>Debt</label>
+              <select id="debtDetailSelect"></select>
+            </div>
+            <div class="form-group">
+              <label>Monthly payment ($)</label>
+              <input type="number" id="debtDetailMonthly" placeholder="e.g. 250" min="0" step="10" />
+            </div>
+            <div class="form-group">
+              <label>APR (%)</label>
+              <input type="number" id="debtDetailApr" placeholder="e.g. 14.32" min="0" step="0.01" />
+            </div>
+            <button class="btn-submit" onclick="updateDebtDetails()">Save details</button>
+          </div>
         </div>
       </div>
     </div>
@@ -740,8 +756,8 @@ function renderDebts() {
       ${d.balance===0?'<div style="font-size:12px;color:#158f50;">Nothing owed 🎉</div>':''}
     </div>`;
   }).join('');
-  ['debtSelect','debtBalSelect'].forEach(id=>{
-    const sel=document.getElementById(id); sel.innerHTML='';
+  ['debtSelect','debtBalSelect','debtDetailSelect'].forEach(id=>{
+    const sel=document.getElementById(id); if(!sel) return; sel.innerHTML='';
     S.debts.forEach(d=>{const o=document.createElement('option');o.value=d.name;o.textContent=d.emoji+' '+d.name;sel.appendChild(o);});
   });
 }
@@ -756,6 +772,19 @@ window.updateDebtBalance = async () => {
   if(isNaN(amount)||amount<0){alert('Enter a valid balance.');return;}
   const d=S.debts.find(d=>d.name===name);
   if(d){d.balance=amount;await persistConfig(currentUser.uid);document.getElementById('debtBalAmount').value='';renderDebts();toast('Balance updated ✓');}
+};
+window.updateDebtDetails = async () => {
+  const name=document.getElementById('debtDetailSelect').value;
+  const monthly=parseFloat(document.getElementById('debtDetailMonthly').value);
+  const apr=parseFloat(document.getElementById('debtDetailApr').value);
+  const d=S.debts.find(d=>d.name===name);
+  if(!d){return;}
+  if(!isNaN(monthly)&&monthly>=0) d.monthlyPayment=monthly;
+  if(!isNaN(apr)&&apr>=0) d.apr=apr;
+  await persistConfig(currentUser.uid);
+  document.getElementById('debtDetailMonthly').value='';
+  document.getElementById('debtDetailApr').value='';
+  renderDebts(); toast('Debt details saved ✓');
 };
 
 // ── Equity ────────────────────────────────────────
