@@ -95,19 +95,15 @@ body {
 .cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .cat-amt { font-size: 12px; color: #999; }
 .cat-amt .over { color: #c0392b; font-weight: 600; }
-.prog-wrap { height: 5px; background: #eeecea; border-radius: 3px; overflow: hidden; }
-.prog-bar { height: 100%; border-radius: 3px; transition: width 0.4s; }
+.prog-wrap { height: 8px; background: #eeecea; border-radius: 6px; overflow: hidden; }
+.prog-bar { height: 100%; border-radius: 6px; transition: width 0.4s; }
 /* ── Goals ── */
 .goals-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 20px; }
 .goal-card { background: #fff; border: 1px solid #e4e2db; border-radius: 14px; padding: 20px 16px 16px; text-align: center; transition: transform 0.15s, box-shadow 0.15s; }
-.goal-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
-.goal-ring-wrap { position: relative; width: 96px; height: 96px; margin: 0 auto 12px; }
-.goal-ring-svg { width: 96px; height: 96px; }
-.goal-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.goal-ring-pct { font-size: 14px; font-weight: 800; line-height: 1; }
-.goal-ring-emoji { font-size: 16px; margin-top: 1px; }
-.goal-card-name { font-size: 13px; font-weight: 600; color: #1a1a18; margin-bottom: 3px; }
-.goal-card-saved { font-size: 18px; font-weight: 700; }
+.goal-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
+.goal-shape-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
+.goal-card-name { font-size: 13px; font-weight: 700; color: #1a1a18; margin-bottom: 3px; letter-spacing: -0.2px; }
+.goal-card-saved { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
 .goal-card-target { font-size: 11px; color: #aaa; margin-bottom: 10px; }
 .goal-footer { display: flex; justify-content: space-between; font-size: 11px; color: #bbb; border-top: 1px solid #f3f1ec; padding-top: 10px; }
 /* ── Forms ── */
@@ -129,7 +125,7 @@ body {
 .tx-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f3f1ec; }
 .tx-item:last-child { border-bottom: none; }
 .tx-left { display: flex; align-items: center; gap: 10px; }
-.tx-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.tx-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: #fff; flex-shrink: 0; letter-spacing: -0.5px; }
 .tx-name { font-size: 14px; font-weight: 500; }
 .tx-meta { font-size: 12px; color: #999; }
 .tx-right { display: flex; align-items: center; gap: 10px; }
@@ -192,7 +188,7 @@ body {
 
 <div id="loginScreen" style="display:none;">
   <div class="login-card">
-    <div class="logo">💰</div>
+    <div class="logo" style="font-size:26px;font-weight:900;letter-spacing:-1px;color:#1a1a18;">BZ</div>
     <h1>BZ's Finance Dashboard</h1>
     <p>Your private spending tracker &amp; budget planner.<br>Sign in with your Google account to continue.</p>
     <button class="btn-google" onclick="signInWithGoogle()">
@@ -590,8 +586,8 @@ function renderBudget() {
     <div class="sum-card"><div class="sum-label">Remaining</div><div class="sum-value ${remaining<0?'c-red':''}">${remaining<0?'-':''}${$f(remaining)}</div><div class="sum-sub">${remaining<0?'⚠️ Over take-home':'Available to spend'}</div></div>`;
 
   const over=S.categories.filter(c=>sm[c.name]>c.budget);
-  document.getElementById('alertBanner').innerHTML=over.length?`<div class="alert-warn">⚠️ Over budget in: <strong>${over.map(c=>c.name).join(', ')}</strong></div>`:'';
-  document.getElementById('savingsStrip').innerHTML=cap>0?`<div class="savings-strip"><div>💚 You can save <span class="big">${$f(cap)}/mo</span> toward your goals</div><div style="font-size:12px;opacity:0.7;">${$f(cap*12)}/yr</div></div>`:'';
+  document.getElementById('alertBanner').innerHTML=over.length?`<div class="alert-warn">Over budget in: <strong>${over.map(c=>c.name).join(', ')}</strong></div>`:'';
+  document.getElementById('savingsStrip').innerHTML=cap>0?`<div class="savings-strip"><div>You can save <span class="big">${$f(cap)}/mo</span> toward your goals</div><div style="font-size:12px;opacity:0.7;">${$f(cap*12)}/yr</div></div>`:'';
   document.getElementById('categoryList').innerHTML=S.categories.map(cat=>{
     const s=sm[cat.name]||0,p=cat.budget>0?Math.min(100,Math.round(s/cat.budget*100)):0,ov=s>cat.budget;
     return `<div class="cat-row"><div class="cat-top"><div class="cat-name"><div class="cat-dot" style="background:${cat.color}"></div>${cat.name}</div><div class="cat-amt">${ov?`<span class="over">${$f(s)}</span>`:$f(s)} / ${$f(cat.budget)}</div></div><div class="prog-wrap"><div class="prog-bar" style="width:${p}%;background:${ov?'#c0392b':cat.color};"></div></div></div>`;
@@ -603,7 +599,7 @@ function renderBudget() {
   renderChart(sm); renderTxList();
 
   const sel=document.getElementById('txCat');
-  if(!sel.options.length) S.categories.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.emoji+' '+c.name;sel.appendChild(o);});
+  if(!sel.options.length) S.categories.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;sel.appendChild(o);});
   const dt=document.getElementById('txDate'); if(!dt.value) dt.value=new Date().toISOString().split('T')[0];
   document.getElementById('txCount').textContent=S.transactions.length+' this month';
 }
@@ -626,9 +622,10 @@ function renderTxList() {
   const txs=[...S.transactions].reverse(), el=document.getElementById('txList');
   if(!txs.length){el.innerHTML='<div class="empty-state">No transactions this month yet.<br>Add your first expense →</div>';return;}
   el.innerHTML=txs.map(tx=>{
-    const cat=S.categories.find(c=>c.name===tx.category)||{color:'#888',emoji:'📋'};
+    const cat=S.categories.find(c=>c.name===tx.category)||{color:'#888'};
+    const initial=tx.name.replace(/[^a-zA-Z]/g,'').charAt(0).toUpperCase()||'$';
     const date=new Date(tx.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    return `<div class="tx-item"><div class="tx-left"><div class="tx-icon" style="background:${cat.color}20;">${cat.emoji}</div><div><div class="tx-name">${tx.name}</div><div class="tx-meta">${tx.category} · ${date}</div></div></div><div class="tx-right"><div class="tx-amount">-${$fd(tx.amount)}</div><button class="tx-del" onclick="deleteTx('${tx.id}')">×</button></div></div>`;
+    return `<div class="tx-item"><div class="tx-left"><div class="tx-icon" style="background:${cat.color};">${initial}</div><div><div class="tx-name">${tx.name}</div><div class="tx-meta">${tx.category} · ${date}</div></div></div><div class="tx-right"><div class="tx-amount">-${$fd(tx.amount)}</div><button class="tx-del" onclick="deleteTx('${tx.id}')">×</button></div></div>`;
   }).join('');
 }
 
@@ -651,38 +648,50 @@ let savingsChartInst = null;
 function renderGoals() {
   const cap=S.takeHome-totalBudget();
   document.getElementById('goalSavingsCap').textContent=$f(cap);
-  const R=38, C=+(2*Math.PI*R).toFixed(1);
-  document.getElementById('goalsGrid').innerHTML=S.goals.map(g=>{
+  document.getElementById('goalsGrid').innerHTML=S.goals.map((g,i)=>{
     const pct=g.target>0?Math.min(100,Math.round(g.saved/g.target*100)):0;
     const left=Math.max(0,g.target-g.saved), mos=cap>0?Math.ceil(left/cap):'∞';
     const done=left===0;
-    const offset=+(C*(1-pct/100)).toFixed(1);
+    // Tomato body: circle cx=50 cy=64 r=38, top=26 bottom=102
+    const fillY=(102-76*pct/100).toFixed(1);
+    const textFill=pct>52?'rgba(255,255,255,0.95)':'#222';
     return `<div class="goal-card">
-      <div class="goal-ring-wrap">
-        <svg class="goal-ring-svg" viewBox="0 0 88 88">
-          <circle cx="44" cy="44" r="${R}" fill="none" stroke="#eeecea" stroke-width="9"/>
-          <circle cx="44" cy="44" r="${R}" fill="none" stroke="${g.color}" stroke-width="9"
-            stroke-dasharray="${C}" stroke-dashoffset="${offset}"
-            stroke-linecap="round" transform="rotate(-90 44 44)"
-            style="transition:stroke-dashoffset 0.9s ease;"/>
+      <div class="goal-shape-wrap">
+        <svg viewBox="0 0 100 114" width="108" height="123" style="overflow:visible;">
+          <defs>
+            <clipPath id="gfill-${i}">
+              <rect x="0" y="${fillY}" width="100" height="120"/>
+            </clipPath>
+          </defs>
+          <!-- Empty tomato body -->
+          <circle cx="50" cy="64" r="38" fill="#f0ede8"/>
+          <!-- Filled tomato body -->
+          <circle cx="50" cy="64" r="38" fill="${g.color}" clip-path="url(#gfill-${i})"/>
+          <!-- Top indent crease -->
+          <path d="M43,29 Q50,25 57,29" fill="none" stroke="rgba(0,0,0,0.09)" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Shine highlight -->
+          <ellipse cx="36" cy="49" rx="9" ry="5.5" fill="rgba(255,255,255,0.3)" transform="rotate(-20 36 49)"/>
+          <!-- Stem -->
+          <line x1="50" y1="27" x2="50" y2="12" stroke="#2a7a45" stroke-width="3" stroke-linecap="round"/>
+          <!-- Leaves -->
+          <path d="M50,26 C44,15 30,18 34,25 C39,20 48,24 50,26Z" fill="#3aaa5f"/>
+          <path d="M50,26 C56,15 70,18 66,25 C61,20 52,24 50,26Z" fill="#3aaa5f"/>
+          <!-- Percent label -->
+          <text x="50" y="69" text-anchor="middle" dominant-baseline="middle" font-size="17" font-weight="800" fill="${textFill}" font-family="-apple-system,BlinkMacSystemFont,sans-serif">${pct}%</text>
         </svg>
-        <div class="goal-ring-center">
-          <div class="goal-ring-pct" style="color:${g.color}">${pct}%</div>
-          <div class="goal-ring-emoji">${g.emoji}</div>
-        </div>
       </div>
       <div class="goal-card-name">${g.name}</div>
       <div class="goal-card-saved" style="color:${g.color}">${$f(g.saved)}</div>
       <div class="goal-card-target">of ${$f(g.target)}</div>
       <div class="goal-footer">
-        <div>${done?'✅ Done!':$f(left)+' left'}</div>
+        <div>${done?'Done!':$f(left)+' left'}</div>
         <div>${!done&&cap>0?'~'+mos+' mo':''}</div>
       </div>
     </div>`;
   }).join('');
   renderSavingsChart();
   const sel=document.getElementById('goalSelect'); sel.innerHTML='';
-  S.goals.forEach(g=>{const o=document.createElement('option');o.value=g.name;o.textContent=g.emoji+' '+g.name;sel.appendChild(o);});
+  S.goals.forEach(g=>{const o=document.createElement('option');o.value=g.name;o.textContent=g.name;sel.appendChild(o);});
 }
 function renderSavingsChart() {
   const totalSaved=S.goals.reduce((a,g)=>a+g.saved,0);
@@ -706,7 +715,7 @@ function renderSavingsChart() {
     <div style="font-size:13px;color:#999;margin-top:4px;">of all goals saved</div>
     <div style="margin-top:20px;font-size:22px;font-weight:700;color:#158f50;">${$f(totalSaved)}</div>
     <div style="font-size:12px;color:#aaa;">saved of ${$f(totalTarget)} total</div>
-    ${totalLeft>0?`<div style="margin-top:6px;font-size:12px;color:#bbb;">${$f(totalLeft)} remaining</div>`:'<div style="margin-top:10px;font-size:18px;">🎉 All goals done!</div>'}
+    ${totalLeft>0?`<div style="margin-top:6px;font-size:12px;color:#bbb;">${$f(totalLeft)} remaining</div>`:'<div style="margin-top:10px;font-size:14px;font-weight:700;color:#158f50;">All goals done!</div>'}
   `;
 }
 window.addToGoal = async () => {
@@ -721,8 +730,8 @@ function renderSettings() {
   document.getElementById('settingsTakeHome').value=S.takeHome;
   document.getElementById('settingsGross').value=S.grossSalary;
   document.getElementById('budgetSettings').innerHTML=S.categories.map((c,i)=>`<div class="setting-row"><div style="display:flex;align-items:center;"><span class="s-dot" style="background:${c.color}"></span>${c.name}</div><input type="number" id="bs_${i}" value="${c.budget}" min="0" step="50"/></div>`).join('');
-  document.getElementById('goalSettings').innerHTML=S.goals.map((g,i)=>`<div class="setting-row"><div style="display:flex;align-items:center;gap:8px;"><span>${g.emoji}</span><div><div style="font-weight:500;">${g.name}</div><div class="s-label">${g.desc}</div></div></div><input type="number" id="gs_${i}" value="${g.target}" min="0" step="500"/></div>`).join('');
-  document.getElementById('debtPaymentSettings').innerHTML=S.debts.map((d,i)=>`<div class="setting-row"><div style="display:flex;align-items:center;gap:8px;"><span>${d.emoji}</span><div><div style="font-weight:500;">${d.name}</div><div class="s-label">Monthly payment</div></div></div><input type="number" id="dp_${i}" value="${d.monthlyPayment}" min="0" step="50"/></div>`).join('');
+  document.getElementById('goalSettings').innerHTML=S.goals.map((g,i)=>`<div class="setting-row"><div><div style="font-weight:500;">${g.name}</div><div class="s-label">${g.desc}</div></div><input type="number" id="gs_${i}" value="${g.target}" min="0" step="500"/></div>`).join('');
+  document.getElementById('debtPaymentSettings').innerHTML=S.debts.map((d,i)=>`<div class="setting-row"><div><div style="font-weight:500;">${d.name}</div><div class="s-label">Monthly payment</div></div><input type="number" id="dp_${i}" value="${d.monthlyPayment}" min="0" step="50"/></div>`).join('');
 }
 window.saveSettingsToCloud = async () => {
   const th=parseFloat(document.getElementById('settingsTakeHome').value), gr=parseFloat(document.getElementById('settingsGross').value);
